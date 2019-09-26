@@ -1,0 +1,34 @@
+version: "3"
+services:
+  iot:
+    build:
+      context: ./
+      dockerfile: Dockerfile_iot
+    restart: always
+    container_name: "microiot_iot"
+    ports:
+      - 8082:8082
+    links:
+      - mongo
+      - rabbitmq
+          
+  mongo:
+    build:
+      context: ./
+      dockerfile: Dockerfile_mongo
+    container_name: "microiot_mongo"
+    restart: always
+    ports:
+      - 27017:27017
+      
+  rabbitmq:
+    build:
+      context: ./
+      dockerfile: Dockerfile_rabbit
+    container_name: "microiot_rabbitmq"
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+      - 61613:61613
+    
