@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.microiot.domain.Configuration;
 import top.microiot.dto.ConfigInfo;
 import top.microiot.dto.ConfigListInfo;
+import top.microiot.exception.ValueException;
 import top.microiot.service.ConfigService;
 
 @RestController
@@ -28,7 +30,13 @@ public class ConfigController extends IoTController{
 	@GetMapping("/list")
 	public List<Configuration> listAll(@Valid ConfigListInfo info, BindingResult result){
 		throwError(result);
-		return configService.queryConfiguration(info.getTop(), info.getSilent());
+		return configService.queryConfiguration(info.getTop(), info.getSilent(), info.getSubscribe());
+	}
+	
+	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
+	@GetMapping("/{moId}")
+	public Configuration listOne(@PathVariable String moId){
+		return configService.listOne(moId);
 	}
 	
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
@@ -37,10 +45,12 @@ public class ConfigController extends IoTController{
 		throwError(result);	
 		if(info.getKey().equals("silent"))
 			return configService.configSilent(info.getNotifyObjectId(), info.getValue());
-		if(info.getKey().equals("top"))
+		else if(info.getKey().equals("top"))
 			return configService.configTop(info.getNotifyObjectId(), info.getValue());
-		
-		return null;
+		else if(info.getKey().equals("subscribe"))
+			return configService.configSubscribe(info.getNotifyObjectId(), info.getValue());
+		else
+			throw new ValueException("illegal config: " + info.getKey());
 	}
 	
 }

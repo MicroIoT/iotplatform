@@ -137,21 +137,15 @@ public class UserService extends IoTService{
 	}
 	
 	@Transactional
-	public User updatePassword(String password) {
+	public User updatePassword(String password, String original) {
 		User user = getCurrentUser();
 		
 //		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //		user.setPassword(encoder.encode(password));
-		user.setPassword(password);
-		return userRepository.save(user);
-	}
-
-	public boolean validatePassword(String password) {
-		User user = getCurrentUser();
-		
-		if(user.getPassword().equals(password))
-			return true;
-		else
-			return false;
+		if(user.getPassword().equals(original)) {
+			user.setPassword(password);
+			return userRepository.save(user);
+		}else
+			throw new ValueException("original password error");
 	}
 }

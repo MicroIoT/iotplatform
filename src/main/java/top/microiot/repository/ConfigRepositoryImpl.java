@@ -15,7 +15,7 @@ public class ConfigRepositoryImpl implements CustomConfigRepository {
 	private MongoTemplate mongoTemplate;
 	
 	@Override
-	public List<Configuration> queryConfiguration(String userId, Boolean top, Boolean silent) {
+	public List<Configuration> queryConfiguration(String userId, Boolean top, Boolean silent, Boolean subscribe) {
 		Query query = new Query();
 		if(userId != null && userId.length() > 0)
 			query.addCriteria(Criteria.where("user.$id").is(new ObjectId(userId)));
@@ -25,6 +25,9 @@ public class ConfigRepositoryImpl implements CustomConfigRepository {
 		
 		if(silent != null)
 			query.addCriteria(Criteria.where("silent").is(silent));
+		
+		if(subscribe != null)
+			query.addCriteria(Criteria.where("subscribe").is(subscribe));
 		
 		return mongoTemplate.find(query, Configuration.class); 
 	}

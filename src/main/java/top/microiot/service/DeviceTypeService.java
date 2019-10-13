@@ -67,9 +67,9 @@ public class DeviceTypeService extends IoTService{
 			throw new ConflictException("device type name");
 		}
 		
-		createAttributeIndexs(type.getStaticAttDefinition(), true);
-		createEventIndexs(type.getAttDefinition());
-		createAlarmIndexs(type.getAlarmTypes());
+//		createAttributeIndexs(type.getStaticAttDefinition(), true);
+//		createEventIndexs(type.getAttDefinition());
+//		createAlarmIndexs(type.getAlarmTypes());
 		
 		return type;
 	}

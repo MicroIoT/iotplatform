@@ -30,8 +30,6 @@ public class SiteTypeService extends IoTService{
 	@Autowired
 	private SiteRepository siteRepository;
 	@Autowired
-	private DeviceTypeService deviceTypeService;
-	@Autowired
 	private MOService moService;
 	
 	@Transactional
@@ -47,7 +45,7 @@ public class SiteTypeService extends IoTService{
 			throw new ConflictException("site type name");
 		}
 		
-		deviceTypeService.createAttributeIndexs(siteType.getAttDefinition(), false);
+		//deviceTypeService.createAttributeIndexs(siteType.getAttDefinition(), false);
 		
 		return siteType;
 	}

@@ -77,12 +77,6 @@ public class UserController extends IoTController{
 	@PatchMapping("/password")
 	public User updatePassword(@RequestBody @Valid PasswordUpdateInfo info, BindingResult result) {
 		throwError(result);
-		return userService.updatePassword(info.getPassword());
-	}
-	
-	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
-	@GetMapping("/password")
-	public boolean validatePassword(String password){
-		return userService.validatePassword(password);
+		return userService.updatePassword(info.getPassword(), info.getOriginal());
 	}
 }

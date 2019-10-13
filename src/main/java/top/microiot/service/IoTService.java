@@ -48,7 +48,7 @@ public abstract class IoTService {
 		if (info == null)
 			info = new PageInfo();
 
-		Sort sort = new Sort(Direction.ASC, "id");
+		Sort sort = new Sort(Direction.DESC, "id");
 		Pageable pageable = PageRequest.of(info.getCurrentPage(), info.getNumPerPage(), sort);
 		return pageable;
 	}

@@ -31,10 +31,10 @@ public class ConfigService extends IoTService {
 	@Autowired
 	private MOService moService;
 	
-	public List<Configuration> queryConfiguration(Boolean top, Boolean silent){
+	public List<Configuration> queryConfiguration(Boolean top, Boolean silent, Boolean subscribe){
 		User user = getCurrentUser();
 		
-		return configRepository.queryConfiguration(user.getId(), top, silent);
+		return configRepository.queryConfiguration(user.getId(), top, silent, subscribe);
 	}
 	
 	public Page<Configuration> listAll() {
@@ -42,6 +42,12 @@ public class ConfigService extends IoTService {
 		User user = getCurrentUser();
 		
 		return configRepository.findByUserId(user.getId(), pageable);
+	}
+	
+	public Configuration listOne(String objectId) {
+		User u = getCurrentUser();
+		
+		return configRepository.findByUserAndNotifyObject(u.getId(), objectId);
 	}
 	
 	private Configuration getConfiguration(String objectId) {
@@ -84,6 +90,15 @@ public class ConfigService extends IoTService {
 		Configuration configuration = getConfiguration(objectId);
 		
 		configuration.setTop(value);
+		
+		return configRepository.save(configuration);
+	}
+	
+	@Transactional
+	public Configuration configSubscribe(String objectId, boolean value) {
+		Configuration configuration = getConfiguration(objectId);
+		
+		configuration.setSubscribe(value);
 		
 		return configRepository.save(configuration);
 	}
