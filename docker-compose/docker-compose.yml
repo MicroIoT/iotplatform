@@ -19,7 +19,16 @@ services:
     container_name: "microiot_studio"
     restart: always
     ports:
-      - 80:80
+      - 8081:80
+             
+  studio:
+    build:
+      context: ./
+      dockerfile: Dockerfile_device
+    container_name: "microiot_device"
+    restart: always
+    ports:
+      - 8083:80
              
   mongo:
     build:

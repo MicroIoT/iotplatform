@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import top.microiot.domain.Configuration;
 import top.microiot.domain.Device;
+import top.microiot.domain.Domain;
 import top.microiot.domain.ManagedObject;
 import top.microiot.domain.Site;
 import top.microiot.domain.User;
@@ -33,8 +34,9 @@ public class ConfigService extends IoTService {
 	
 	public List<Configuration> queryConfiguration(Boolean top, Boolean silent, Boolean subscribe){
 		User user = getCurrentUser();
-		
-		return configRepository.queryConfiguration(user.getId(), top, silent, subscribe);
+		Domain domain = getCurrentDomain();
+        
+		return configRepository.queryConfiguration(domain.getId(), user.getId(), top, silent, subscribe);
 	}
 	
 	public Page<Configuration> listAll() {
