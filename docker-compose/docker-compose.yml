@@ -21,7 +21,7 @@ services:
     ports:
       - 8081:80
              
-  studio:
+  device:
     build:
       context: ./
       dockerfile: Dockerfile_device
