@@ -56,7 +56,6 @@ public class SiteTypeService extends IoTService{
 		
 		SiteType type = siteTypeRepository.findById(info.getId()).get();
 		type.setName(info.getName());
-		type.setDescription(info.getDescription());
 		
 		try{
 			return siteTypeRepository.save(type);

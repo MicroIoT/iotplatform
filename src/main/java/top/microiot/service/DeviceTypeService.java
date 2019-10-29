@@ -129,7 +129,6 @@ public class DeviceTypeService extends IoTService{
 		
 		DeviceType type = typeRepository.findById(info.getId()).get();
 		type.setName(info.getName());
-		type.setDescription(info.getDescription());
 		
 		try{
 			return typeRepository.save(type);

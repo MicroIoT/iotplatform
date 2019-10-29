@@ -1,1 +1,1 @@
-FROM microiot/iotplatform:1.0.2
+FROM microiot/iotplatform:1.0.3

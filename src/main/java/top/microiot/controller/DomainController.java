@@ -62,7 +62,7 @@ public class DomainController extends IoTController{
 		return domainService.getCurrentDomain();
 	}
 	
-	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
+	@PreAuthorize("hasAuthority('SYSTEM')")
 	@PatchMapping("")
 	public Domain renameDomain(@RequestBody @Valid DomainRenameInfo info, BindingResult result) {
 		throwError(result);

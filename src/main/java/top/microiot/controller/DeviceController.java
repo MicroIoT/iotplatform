@@ -105,7 +105,7 @@ public class DeviceController extends IoTController{
 	
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
 	@DeleteMapping("/{id}")
-	public void deleteSite(@PathVariable String id){
+	public void delete(@PathVariable String id){
 		deviceManageService.delete(id);
 	}
 	

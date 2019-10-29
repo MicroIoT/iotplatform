@@ -85,7 +85,7 @@ public class DomainService extends IoTService{
 
 	@Transactional
 	public Domain renameDomain(@Valid DomainRenameInfo info) {
-		Domain domain = moService.hasDomainAccess();
+		Domain domain = domainRepository.findById(info.getId()).get();
 		domain.setName(info.getName());
 		return domainRepository.save(domain);
 	}
