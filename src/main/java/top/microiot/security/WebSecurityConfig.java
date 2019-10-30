@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private String[] permitAll() {
-		return  new String[] { "/", "/"+ws, "/login", "/token", "/error" };
+		return  new String[] { "/", "/"+ws, "/login", "/token", "/register", "/error" };
 	}
 	
 	@Bean

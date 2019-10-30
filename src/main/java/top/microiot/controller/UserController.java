@@ -19,6 +19,7 @@ import top.microiot.domain.Role;
 import top.microiot.domain.User;
 import top.microiot.dto.PageInfo;
 import top.microiot.dto.PasswordUpdateInfo;
+import top.microiot.dto.RegisterInfo;
 import top.microiot.dto.UserInfo;
 import top.microiot.dto.UserUpdateInfo;
 import top.microiot.exception.ValueException;
@@ -39,6 +40,12 @@ public class UserController extends IoTController{
 		else if(info.getRole() == Role.SYSTEM)
 			return userService.addAdmin(info.getUsername(), info.getPassword(), info.getEmail());
 		throw new ValueException("error role");
+	}
+	
+	@PostMapping("/register")
+	public User register(@RequestBody @Valid RegisterInfo info, BindingResult result) {
+		throwError(result);
+		return userService.register(info);
 	}
 	
 	@PreAuthorize("hasAuthority('SYSTEM')")

@@ -12,9 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import top.microiot.domain.Domain;
 import top.microiot.domain.ManagedObject;
 import top.microiot.domain.Role;
 import top.microiot.domain.User;
+import top.microiot.dto.DomainInfo;
+import top.microiot.dto.RegisterInfo;
 import top.microiot.dto.UserUpdateInfo;
 import top.microiot.exception.ConflictException;
 import top.microiot.exception.ValueException;
@@ -32,6 +35,8 @@ public class UserService extends IoTService{
 	private ConfigRepository configRepository;
 	@Autowired
 	private MOService moService;
+	@Autowired
+	private DomainService domainService;
 	
 	@Transactional
 	public User addAdmin(String username, String password, String email ) {
@@ -66,6 +71,32 @@ public class UserService extends IoTService{
 		return user;
 	}
 
+	@Transactional
+	public User register(RegisterInfo info) {
+		DomainInfo d = new DomainInfo();
+		d.setName(info.getEmail());
+		Domain domain;
+		try {
+			domain = domainService.addDomain(d);
+		} catch (ConflictException e) {
+			throw new ValueException("email:" + info.getEmail() + " existed");
+		}
+		
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(Role.AREA);
+		List<ManagedObject> sites = new ArrayList<ManagedObject>();
+		sites.add(domain);
+		
+		User user = new User(info.getEmail(), info.getPassword(), info.getEmail(), roles, sites);
+		
+		try{
+			userRepository.save(user);
+		} catch (DuplicateKeyException e) {
+			throw new ConflictException("user name:" + info.getEmail());
+		}
+		
+		return user;
+	}
 	private List<ManagedObject> getSites(List<String> areas) {
 		if(areas == null || areas.isEmpty())
 			return null;

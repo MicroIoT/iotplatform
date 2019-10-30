@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import top.microiot.domain.ManagedObject;
 import top.microiot.domain.User;
 import top.microiot.dto.DomainInfo;
 import top.microiot.dto.DomainRenameInfo;
+import top.microiot.exception.ConflictException;
 import top.microiot.exception.NotFoundException;
 import top.microiot.repository.AlarmRepository;
 import top.microiot.repository.ConfigRepository;
@@ -56,7 +58,11 @@ public class DomainService extends IoTService{
 	public Domain addDomain(DomainInfo info) {
 		Domain domain = new Domain(info.getName());
 		
-		return domainRepository.save(domain);
+		try{
+			return domainRepository.save(domain);
+		} catch (DuplicateKeyException e) {
+			throw new ConflictException("domain:" + info.getName());
+		}
 	}
 	
 	public Domain getByName(String name) {
