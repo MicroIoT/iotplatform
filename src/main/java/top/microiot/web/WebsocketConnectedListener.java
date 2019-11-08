@@ -42,7 +42,7 @@ public class WebsocketConnectedListener implements ApplicationListener<SessionCo
 					device.setConnected(true);
 					deviceRepository.save(device);
 				}
-				Alarm alarm = new Alarm(device, AlarmType.CONNECTED, null, new Date());
+				Alarm alarm = new Alarm(device, AlarmType.CONNECTED_ALARM, null, new Date());
 				alarm = alarmRepository.save(alarm);
 				String destination = "/topic/alarm." + device.getId();
 				template.convertAndSend(destination, alarm);

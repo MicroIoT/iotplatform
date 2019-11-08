@@ -41,7 +41,7 @@ public class WebsocketDisconnectListener implements ApplicationListener<SessionD
 					device.setConnected(false);
 					deviceRepository.save(device);
 				}
-				Alarm alarm = new Alarm(device, AlarmType.DISCONNECTED, null, new Date());
+				Alarm alarm = new Alarm(device, AlarmType.DISCONNECTED_ALARM, null, new Date());
 				alarm = alarmRepository.save(alarm);
 				String destination = "/topic/alarm." + device.getId();
 				template.convertAndSend(destination, alarm);
