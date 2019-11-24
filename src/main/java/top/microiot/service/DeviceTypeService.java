@@ -218,7 +218,7 @@ public class DeviceTypeService extends IoTService{
 		
 		type = typeRepository.save(type);
 		
-		createEventIndex(info.getName(), value);
+//		createEventIndex(info.getName(), value);
 		
 		return type;
 	}
@@ -253,7 +253,7 @@ public class DeviceTypeService extends IoTService{
 		
 		type = typeRepository.save(type);
 		
-		createAlarmIndex(info.getName(), value);
+//		createAlarmIndex(info.getName(), value);
 		
 		return type;
 	}
