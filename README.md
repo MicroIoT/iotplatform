@@ -7,7 +7,7 @@ MicroIoT是基于微服务架构的物联网平台，通过软件定义物联网
 | 项目                                                        | 描述                                   |
 | ----------------------------------------------------------- | -------------------------------------- |
 | [MicroIoT Server](https://github.com/MicroIoT/iotplatform)  | MicroIoT后台服务器                     |
-| [MicroIoT API for JAVA](https://github.com/MicroIoT/iotapi) | MicroIoT应用端、设备端JAVA应用编程接口 |
+| [MicroIoT API for Java](https://github.com/MicroIoT/iotapi) | MicroIoT应用端、设备端Java应用编程接口 |
 | [MicroIoT Studio](https://github.com/MicroIoT/studio)       | MicroIoT web图形界面管理工具           |
 | [MicroIoT Device](https://github.com/MicroIoT/device)       | MicroIoT web图形界面设备模拟器工具     |
 
