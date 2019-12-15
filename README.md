@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="https://github.com/MicroIoT/website/blob/master/src/statics/icons/favicon-96x96.png" alt="Logo"></div>
+<p align="center"><img src="https://github.com/MicroIoT/website/blob/master/src/statics/icons/favicon-96x96.png" alt="Logo"></p>
 
 # MicroIoT
 
