@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -54,5 +55,14 @@ public class AlarmRepositoryImpl implements CustomAlarmRepository {
 	public void deleteByNotifyObjectId(String id) {
 		Query query = Query.query(Criteria.where("notifyObject.$id").is(new ObjectId(id)));
 		mongoTemplate.remove(query, Alarm.class);
+	}
+
+	@Override
+	public Alarm queryLastAlarm(String deviceId) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("notifyObject.$id").is(new ObjectId(deviceId)));
+		query.with(new Sort(Sort.Direction.DESC, "reportTime"));
+		
+		return mongoTemplate.findOne(query, Alarm.class);
 	}
 }

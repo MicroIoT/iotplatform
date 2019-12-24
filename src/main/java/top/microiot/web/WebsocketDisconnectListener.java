@@ -37,14 +37,17 @@ public class WebsocketDisconnectListener implements ApplicationListener<SessionD
 			if (user.isDevice()){
 				Device device = deviceRepository.findByDeviceAccountUsername(user.getUsername());
 				logger.debug("disconnected device is " + user.getUsername() + " at " + date);
-				if(device.isConnected()){
-					device.setConnected(false);
-					deviceRepository.save(device);
+				Alarm last = alarmRepository.queryLastAlarm(device.getId());
+				if(last == null || (last != null && last.getReportTime().before(date))) {
+					if(device.isConnected()){
+						device.setConnected(false);
+						deviceRepository.save(device);
+					}
+					Alarm alarm = new Alarm(device, AlarmType.DISCONNECTED_ALARM, null, date);
+					alarm = alarmRepository.save(alarm);
+					String destination = "/topic/alarm." + device.getId();
+					template.convertAndSend(destination, alarm);
 				}
-				Alarm alarm = new Alarm(device, AlarmType.DISCONNECTED_ALARM, null, new Date());
-				alarm = alarmRepository.save(alarm);
-				String destination = "/topic/alarm." + device.getId();
-				template.convertAndSend(destination, alarm);
 			}
 		}
 	}

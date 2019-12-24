@@ -10,4 +10,5 @@ import top.microiot.domain.Alarm;
 public interface CustomAlarmRepository {
 	public Page<Alarm> queryAlarm(String domainId, String notifyObjectId, String alarmType, Date reportFrom, Date reportTo, Date receiveFrom, Date receiveTo, Pageable pageable);
 	public void deleteByNotifyObjectId(String id);
+	public Alarm queryLastAlarm(String deviceId);
 }
