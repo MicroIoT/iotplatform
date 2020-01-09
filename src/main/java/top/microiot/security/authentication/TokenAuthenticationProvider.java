@@ -27,7 +27,7 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
 			throws AuthenticationException {
 		String token= (String) authentication.getPrincipal();
 		try{
-			return tokenService.getUser(token);
+			return tokenService.getCheckUser(token);
 		} catch(Throwable e) {
 			throw new AuthenticationServiceException(e.getMessage());
 		}

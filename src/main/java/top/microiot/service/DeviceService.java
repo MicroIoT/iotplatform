@@ -48,6 +48,23 @@ public class DeviceService extends IoTService{
 		return device;
 	}
 	
+	public Device getDeviceByUsername(String username) {
+		Device device = deviceRepository.findByDeviceAccountUsername(username);
+		
+		if(!moService.isMyMO(device)) {
+			Map<String, DeviceAttributeType> map = device.getDeviceType().getAttDefinition();
+			for (String key : map.keySet()) {
+				DeviceAttributeType type  = map.get(key);
+			    type.setGet(false);
+				type.setSet(false);
+				type.setReport(false);
+			}
+			
+		}
+		
+		return device;
+	}
+	
 	public Device listDeviceByDevice(String id){
 		if (deviceGroupService.isGroup(id)) {
 			Device device = deviceRepository.findById(id).get();

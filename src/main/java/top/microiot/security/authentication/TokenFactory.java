@@ -89,4 +89,17 @@ public class TokenFactory {
     public String getScope(Jws<Claims> claims) {
     	return claims.getBody().get(SCOPES, String.class);
     }
+    
+    public String getUsername(Jws<Claims> claims) {
+    	return claims.getBody().getSubject();
+    }
+    
+    public Date getExpire(String token) {
+    	return parseClaims(token).getBody().getExpiration();
+    }
+    
+    public String getJti(String token) {
+		Jws<Claims> jwsClaims = parseClaims(token);
+		return jwsClaims.getBody().getId();
+	}
 }

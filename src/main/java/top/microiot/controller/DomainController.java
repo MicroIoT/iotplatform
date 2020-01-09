@@ -1,7 +1,10 @@
 package top.microiot.controller;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +43,9 @@ public class DomainController extends IoTController{
 	
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
 	@PatchMapping("/{name}")
-	public Token chooseDomain(@PathVariable String name){
-		return tokenService.updateToken(name);
+	public Token chooseDomain(HttpServletRequest request, @PathVariable String name){
+		String token = request.getHeader(AUTHORIZATION);
+		return tokenService.updateToken(name, token);
 	}
 
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")

@@ -62,6 +62,14 @@ public class DeviceController extends IoTController{
 		return device;
 	}
 	
+	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA') ")
+	@GetMapping("/username/{username}")
+	public Device getDeviceByUsername(@PathVariable String username){
+		Device device = deviceService.getDeviceByUsername(username);
+		
+		return device;
+	}
+	
 	@PreAuthorize("hasAuthority('DEVICE')")
 	@GetMapping("/me")
 	public Device getDevice(){
