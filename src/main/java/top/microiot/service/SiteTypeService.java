@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import top.microiot.domain.Domain;
 import top.microiot.domain.SiteType;
+import top.microiot.domain.SiteTypeFile;
 import top.microiot.domain.attribute.AttTypeInfo;
 import top.microiot.domain.attribute.AttributeType;
 import top.microiot.domain.attribute.AttributeTypes;
@@ -37,6 +38,24 @@ public class SiteTypeService extends IoTService{
 		Domain domain = moService.hasDomainAccess();
 		AttributeTypes attributes = new AttributeTypes(info.getAdditional());
 		Map<String, AttributeType> attTypes = attributes.getAttTypes();
+		
+		SiteType siteType = new SiteType(info.getName(), info.getDescription(), domain, attTypes);
+		try{
+			siteType = siteTypeRepository.save(siteType);
+		} catch (DuplicateKeyException e) {
+			throw new ConflictException("site type name");
+		}
+		
+		//deviceTypeService.createAttributeIndexs(siteType.getAttDefinition(), false);
+		
+		return siteType;
+	}
+	
+	@Transactional
+	public SiteType add(SiteTypeFile info ){
+		Domain domain = moService.hasDomainAccess();
+		
+		Map<String, AttributeType> attTypes = info.getAttDefinition();
 		
 		SiteType siteType = new SiteType(info.getName(), info.getDescription(), domain, attTypes);
 		try{

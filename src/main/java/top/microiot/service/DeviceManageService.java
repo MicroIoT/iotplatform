@@ -35,6 +35,7 @@ import top.microiot.repository.DeviceRepository;
 import top.microiot.repository.DeviceTypeRepository;
 import top.microiot.repository.EventRepository;
 import top.microiot.repository.FavoriteRepository;
+import top.microiot.repository.LoginUserRepository;
 
 @Service
 public class DeviceManageService extends IoTService{
@@ -52,6 +53,8 @@ public class DeviceManageService extends IoTService{
 	private FavoriteRepository favoriteRepository;
 	@Autowired
 	private ConfigRepository configRepository;
+	@Autowired
+	private LoginUserRepository loginUserRepository;
 	@Autowired
 	private MOService moService;
 
@@ -166,5 +169,6 @@ public class DeviceManageService extends IoTService{
 		favoriteRepository.deleteByMoId(deviceId);
 		configRepository.deleteByNotifyObjectId(deviceId);
 		deviceRepository.deleteById(deviceId);
+		loginUserRepository.deleteByUsername(device.getDeviceAccount().getUsername());
 	}
 }

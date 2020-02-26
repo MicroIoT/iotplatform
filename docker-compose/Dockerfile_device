@@ -1,1 +1,1 @@
-FROM microiot/device:1.0.1
+FROM microiot/device:1.0.2

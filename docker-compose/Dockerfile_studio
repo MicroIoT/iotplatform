@@ -1,1 +1,1 @@
-FROM microiot/studio:1.0.4
+FROM microiot/studio:1.0.5

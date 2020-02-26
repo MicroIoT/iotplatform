@@ -18,6 +18,7 @@ import top.microiot.domain.ActionType;
 import top.microiot.domain.Alarm;
 import top.microiot.domain.Device;
 import top.microiot.domain.DeviceType;
+import top.microiot.domain.DeviceTypeFile;
 import top.microiot.domain.Domain;
 import top.microiot.domain.Event;
 import top.microiot.domain.Site;
@@ -59,6 +60,29 @@ public class DeviceTypeService extends IoTService{
 		AttributeTypes alarmAttribute = new AttributeTypes(info.getAlarmTypeInfos());
 		Map<String, AttributeType> alarmTypes = alarmAttribute.getAttTypes();
 		Map<String, ActionType> actionTypes = getActionTypes(info.getActionTypeInfos());
+		
+		DeviceType type = new DeviceType(info.getName(), info.getDescription(), domain, params, staticAttTypes, alarmTypes, actionTypes);
+		try{
+			type = typeRepository.save(type);
+		} catch (DuplicateKeyException e) {
+			throw new ConflictException("device type name");
+		}
+		
+//		createAttributeIndexs(type.getStaticAttDefinition(), true);
+//		createEventIndexs(type.getAttDefinition());
+//		createAlarmIndexs(type.getAlarmTypes());
+		
+		return type;
+	}
+	
+	@Transactional
+	public DeviceType add(DeviceTypeFile info) {
+		Domain domain = moService.hasDomainAccess();
+		
+		Map<String, DeviceAttributeType> params = info.getAttDefinition();
+		Map<String, AttributeType> staticAttTypes = info.getStaticAttDefinition();
+		Map<String, AttributeType> alarmTypes = info.getAlarmTypes();
+		Map<String, ActionType> actionTypes = info.getActionTypes();
 		
 		DeviceType type = new DeviceType(info.getName(), info.getDescription(), domain, params, staticAttTypes, alarmTypes, actionTypes);
 		try{

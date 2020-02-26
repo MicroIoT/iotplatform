@@ -9,4 +9,5 @@ public interface LoginUserRepository extends MongoRepository<LoginUser, String>,
 	public LoginUser findByRefreshToken(String refreshToken);
 	public boolean existsByToken(String token);
 	public boolean existsByUsername(String username);
+	public void deleteByUsername(String username);
 }
