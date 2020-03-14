@@ -26,6 +26,7 @@ import top.microiot.dto.DeviceMoveInfo;
 import top.microiot.dto.DevicePageInfo;
 import top.microiot.dto.DeviceRenameInfo;
 import top.microiot.dto.DeviceUpdateInfo;
+import top.microiot.dto.SubDeviceInfo;
 import top.microiot.security.CustomUserDetails;
 import top.microiot.service.DeviceManageService;
 import top.microiot.service.DeviceService;
@@ -48,6 +49,13 @@ public class DeviceController extends IoTController{
 		return deviceManageService.register(info);
 	}
 	
+	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
+	@PostMapping("/subdevice")
+	public Device register(@RequestBody @Valid SubDeviceInfo<AttValueInfo> info, BindingResult result) {
+		throwError(result);
+		return deviceManageService.register(info);
+	}
+	
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA') or hasAuthority('DEVICE')")
 	@GetMapping("/{id}")
 	public Device getDevice(@PathVariable String id){
@@ -60,6 +68,12 @@ public class DeviceController extends IoTController{
 		else
 			device = deviceService.listDeviceByDevice(id);
 		return device;
+	}
+	
+	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA') or hasAuthority('DEVICE')")
+	@GetMapping("/subdevice/{id}")
+	public List<Device> getSubDevice(@PathVariable String id){
+		return deviceService.getSubDevice(id);
 	}
 	
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA') ")
@@ -76,6 +90,11 @@ public class DeviceController extends IoTController{
 		return deviceService.listCurrentDevice();
 	}
 	
+	@PreAuthorize("hasAuthority('DEVICE')")
+	@GetMapping("/subdevice")
+	public List<Device> getMySubDevice(){
+		return deviceService.getMySubDevice();
+	}
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
 	@GetMapping("")
 	public Page<Device> getDevices(@Valid DevicePageInfo info, BindingResult result){

@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import top.microiot.domain.Action;
+import top.microiot.domain.Device;
 import top.microiot.domain.Get;
 import top.microiot.domain.Request;
 import top.microiot.domain.Set;
@@ -159,7 +160,8 @@ public class WebsocketAuthorityInterceptor implements ChannelInterceptor {
 	}
 
 	private boolean isDeviceTopic(CustomUserDetails user, Topic topic) {
-		return deviceService.listCurrentDevice().getId().equals(topic.getNotifyObjectId());
+		Device device = deviceService.listCurrentDevice();
+		return device.getId().equals(topic.getNotifyObjectId()) || deviceService.isChild(topic.getNotifyObjectId());
 	}
 
 	private boolean validateSend(CustomUserDetails user, String topicDestination) {

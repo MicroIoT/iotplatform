@@ -17,4 +17,5 @@ public interface DeviceRepository extends MongoRepository<Device, String>, Custo
 	public int countByNameLike(String deviceName);
 	public int countByDeviceType(String deviceTypeId);
 	public void deleteByDomainId(String id);
+	public List<Device> findByGatewayId(String id);
 }

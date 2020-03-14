@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.microiot.domain.Alarm;
 import top.microiot.dto.AlarmInfo;
 import top.microiot.dto.AlarmPageInfo;
+import top.microiot.dto.SubDeviceAlarmInfo;
 import top.microiot.service.AlarmService;
 
 @RestController
@@ -27,6 +28,13 @@ public class AlarmController extends IoTController{
 	@PreAuthorize("hasAuthority('DEVICE')")
 	@PostMapping("")
 	public Alarm report(@RequestBody @Valid AlarmInfo info, BindingResult result) {
+		throwError(result);
+		return alarmService.report(info);
+	}
+	
+	@PreAuthorize("hasAuthority('DEVICE')")
+	@PostMapping("/subdevice")
+	public Alarm report(@RequestBody @Valid SubDeviceAlarmInfo info, BindingResult result) {
 		throwError(result);
 		return alarmService.report(info);
 	}

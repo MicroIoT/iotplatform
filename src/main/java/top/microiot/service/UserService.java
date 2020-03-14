@@ -17,6 +17,7 @@ import top.microiot.domain.ManagedObject;
 import top.microiot.domain.Role;
 import top.microiot.domain.User;
 import top.microiot.dto.DomainInfo;
+import top.microiot.dto.PageInfo;
 import top.microiot.dto.RegisterInfo;
 import top.microiot.dto.UserUpdateInfo;
 import top.microiot.exception.ConflictException;
@@ -162,8 +163,8 @@ public class UserService extends IoTService{
 		return user;
 	}
 	
-	public Page<User> listAll(){
-		Pageable pageable = getPageable(null);
+	public Page<User> listAll(PageInfo info){
+		Pageable pageable = getPageable(info);
 		return userRepository.findAll(pageable);
 	}
 	

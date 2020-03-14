@@ -28,7 +28,9 @@ import top.microiot.dto.DeviceInfo;
 import top.microiot.dto.DeviceMoveInfo;
 import top.microiot.dto.DeviceRenameInfo;
 import top.microiot.dto.DeviceUpdateInfo;
+import top.microiot.dto.SubDeviceInfo;
 import top.microiot.exception.NotFoundException;
+import top.microiot.exception.ValueException;
 import top.microiot.repository.AlarmRepository;
 import top.microiot.repository.ConfigRepository;
 import top.microiot.repository.DeviceRepository;
@@ -86,6 +88,35 @@ public class DeviceManageService extends IoTService{
 		return deviceRepository.save(device);
 	}
 
+	@Transactional
+	public Device register(SubDeviceInfo<AttValueInfo> info) {
+		Domain domain = getCurrentDomain();
+		DeviceType type = typeRepository.findByNameAndDomain(info.getDeviceType(), domain.getId());
+		if(type == null)
+			throw new NotFoundException("device type");
+		
+		ManagedObject location = moService.getLocation1(info.getLocationId());
+		if(location == null || !location.getDomain().equals(domain))
+			throw new NotFoundException("location");
+		if(!moService.isMyMO(location))
+			throw new AccessDeniedException(info.getLocationId());
+		
+		Device gateway = deviceRepository.findById(info.getGatewayId()).get();
+		if(!gateway.getDomain().getId().equals(domain.getId()))
+			throw new ValueException("gateway value error");
+		
+		return doRegister(info.getName(), type, info.getAttInfos(), location, gateway);
+	}
+	
+	private Device doRegister(String name, DeviceType type, Map<String, AttValueInfo> attValueInfos, ManagedObject location, Device gateway) {
+		AttributeValues attributes = new AttributeValues(attValueInfos, type.getStaticAttDefinition());
+		Map<String, DataValue> attributeValues = attributes.getAttributes();
+		
+		Device device = new Device(name, type, attributeValues, location, gateway);
+		
+		return deviceRepository.save(device);
+	}
+	
 	private User getAccount() {
 		UUID id = UUID.randomUUID();
 		String password = String.valueOf((int)((Math.random()*9+1)*10000000));

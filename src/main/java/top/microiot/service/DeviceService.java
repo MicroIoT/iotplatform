@@ -66,7 +66,7 @@ public class DeviceService extends IoTService{
 	}
 	
 	public Device listDeviceByDevice(String id){
-		if (deviceGroupService.isGroup(id)) {
+		if (deviceGroupService.isGroup(id) || isChild(id)) {
 			Device device = deviceRepository.findById(id).get();
 			return device;
 		}
@@ -119,5 +119,23 @@ public class DeviceService extends IoTService{
 				getSiteDevices(devices, s);
 			}
 		}
+	}
+	
+	public  boolean isChild(String deviceId) {
+		Device d = getCurrentDevice();
+		Device child = deviceRepository.findById(deviceId).get();
+		if(child.getGateway().equals(d))
+			return true;
+		else
+			return false;
+	}
+	
+	public List<Device> getSubDevice(String id){
+		return deviceRepository.findByGatewayId(id);
+	}
+	
+	public List<Device> getMySubDevice(){
+		Device d = getCurrentDevice();
+		return deviceRepository.findByGatewayId(d.getId());
 	}
 }

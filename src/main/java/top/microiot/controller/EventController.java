@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.microiot.domain.Event;
 import top.microiot.dto.EventInfo;
 import top.microiot.dto.EventPageInfo;
+import top.microiot.dto.SubDeviceEventInfo;
 import top.microiot.service.EventService;
 
 @RestController
@@ -27,6 +28,13 @@ public class EventController extends IoTController{
 	@PreAuthorize("hasAuthority('DEVICE')")
 	@PostMapping("")
 	public void report(@RequestBody @Valid EventInfo info, BindingResult result) {
+		throwError(result);
+		eventService.report(info);
+	}
+	
+	@PreAuthorize("hasAuthority('DEVICE')")
+	@PostMapping("/subdevice")
+	public void report(@RequestBody @Valid SubDeviceEventInfo info, BindingResult result) {
 		throwError(result);
 		eventService.report(info);
 	}

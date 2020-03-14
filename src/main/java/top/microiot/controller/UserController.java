@@ -71,7 +71,7 @@ public class UserController extends IoTController{
 	@RequestMapping("")
 	public Page<User> getUsers(@Valid PageInfo info, BindingResult result){
 		throwError(result);
-        return userService.listAll();
+        return userService.listAll(info);
 	}
 	
 	@PreAuthorize("hasAuthority('SYSTEM') or hasAuthority('AREA')")
