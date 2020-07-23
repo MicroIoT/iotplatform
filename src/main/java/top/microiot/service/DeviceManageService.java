@@ -104,6 +104,8 @@ public class DeviceManageService extends IoTService{
 		Device gateway = deviceRepository.findById(info.getGatewayId()).get();
 		if(!gateway.getDomain().getId().equals(domain.getId()))
 			throw new ValueException("gateway value error");
+		if(gateway.getDeviceAccount() == null)
+			throw new ValueException("gateway has no account");
 		
 		return doRegister(info.getName(), type, info.getAttInfos(), location, gateway);
 	}

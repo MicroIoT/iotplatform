@@ -8,3 +8,5 @@ db.user.insert(
 		"email":"13601161480@139.com", 
 		"roles":["SYSTEM"]}
 );
+
+db.device.dropIndex("deviceAccount.username");
